@@ -10,11 +10,18 @@ import AsyncStorage from '../../common/AsyncStorage';
 const Header = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
+
   const ref = useRef(false);
 
   const getAuth = async () => {
     ref.current = true
     setIsAdmin(await Auth.isAdmin())
+    if(!await Auth.loggedIn()){
+      navigate('/login', { replace: true })
+      navigate(0)
+    }
+
   }
   useEffect(() => {
     if (ref.current == false)
@@ -31,7 +38,7 @@ const Header = () => {
       <Navbar bg="primary" expand="lg" style={{ borderRadius: 3 }}>
         <Container style={{ paddingLeft: '0.5%' }}>
           <Nav className="me-auto">
-            <Nav.Link href="/balance" style={{ color: 'white' }}>Balance</Nav.Link>
+          {!isAdmin && <Nav.Link href="/balance" style={{ color: 'white' }}>Balance</Nav.Link>}
             <Nav.Link href="/deposit" style={{ color: 'white' }}>Deposit</Nav.Link>
             <Nav.Link href="/purchase" style={{ color: 'white' }}>Purchase</Nav.Link>
 
