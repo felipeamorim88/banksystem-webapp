@@ -24,5 +24,15 @@ export default  {
         await AsyncStorage.getItem("account_id") ? flag = true : flag = false;
       
         return flag
+      },
+      verified: async() => {
+        let flag = false;
+      
+        //check user has admin privileges
+        await AsyncStorage.getItem("verified") ?
+        await AsyncStorage.getItem("verified") == '1' ? flag = true :
+            flag = false : flag = false
+      
+        return flag
       }
 };

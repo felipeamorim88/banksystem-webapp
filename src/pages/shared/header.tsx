@@ -10,23 +10,31 @@ import AsyncStorage from '../../common/AsyncStorage';
 const Header = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false)
-  const [loggedIn, setLoggedIn] = useState(false)
-
+  const path = window.location.pathname
   const ref = useRef(false);
+
+  const handleRedirect = async () => {
+    if (!await Auth.loggedIn()) {
+      navigate('/login', { replace: true })
+      navigate(0)
+    } else {
+      if (path == '/') {
+        navigate('/balance', { replace: true })
+        navigate(0)
+      }
+    }
+  }
 
   const getAuth = async () => {
     ref.current = true
     setIsAdmin(await Auth.isAdmin())
-    if(!await Auth.loggedIn()){
-      navigate('/login', { replace: true })
-      navigate(0)
-    }
+    handleRedirect()
 
   }
   useEffect(() => {
-    if (ref.current == false)
+    if (ref.current == false) 
       getAuth()
-  })
+    })
   const logout = async () => {
     await AsyncStorage.clear();
     navigate('/login', { replace: true })
@@ -38,7 +46,7 @@ const Header = () => {
       <Navbar bg="primary" expand="lg" style={{ borderRadius: 3 }}>
         <Container style={{ paddingLeft: '0.5%' }}>
           <Nav className="me-auto">
-          {!isAdmin && <Nav.Link href="/balance" style={{ color: 'white' }}>Balance</Nav.Link>}
+            {!isAdmin && <Nav.Link href="/balance" style={{ color: 'white' }}>Balance</Nav.Link>}
             <Nav.Link href="/deposit" style={{ color: 'white' }}>Deposit</Nav.Link>
             <Nav.Link href="/purchase" style={{ color: 'white' }}>Purchase</Nav.Link>
 

@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import AccountService from '../../services';
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import Error from '../../../shared/Error';
 import AsyncStorage from '../../../../common/AsyncStorage';
 import { Navbar } from 'react-bootstrap';
@@ -17,8 +17,6 @@ export default () => {
         password, setPassword,
     } = useAccountContext();
     const navigate = useNavigate();
-    const location = useLocation();
-    console.log(location.pathname);
     const service = new AccountService()
     const [showError, setShowError] = useState(false)
     const [error, setError] = useState('')
